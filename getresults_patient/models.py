@@ -1,10 +1,12 @@
 from django.db import models
 from django_crypto_fields.fields import FirstnameField, LastnameField
 
-from edc_base.model.models import BaseUuidModel, HistoricalRecords
+from edc_base.model.models import BaseUuidModel
+from edc_base.audit_trail import AuditTrail
 from edc_constants.choices import GENDER
 
 from .identifiers import PatientIdentifier
+from django.utils import timezone
 
 
 class Patient(BaseUuidModel):
@@ -30,7 +32,8 @@ class Patient(BaseUuidModel):
         max_length=25,
         null=True)
 
-    registration_datetime = models.DateTimeField()
+    registration_datetime = models.DateTimeField(
+        default=timezone.now)
 
     gender = models.CharField(
         max_length=10,
@@ -44,7 +47,7 @@ class Patient(BaseUuidModel):
         max_length=25,
         null=True)
 
-    history = HistoricalRecords()
+    history = AuditTrail()
 
     def save(self, *args, **kwargs):
         if not self.id and not self.patient_identifier:

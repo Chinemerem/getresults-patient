@@ -2,7 +2,7 @@ from django.db import models
 from django_crypto_fields.fields import FirstnameField, LastnameField
 
 from edc_base.model.models import BaseUuidModel
-from edc_base.audit_trail import AuditTrail
+from simple_history.models import HistoricalRecords as AuditTrail
 from edc_constants.choices import GENDER
 
 from .identifiers import PatientIdentifier
